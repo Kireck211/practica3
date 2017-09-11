@@ -34,5 +34,6 @@ int main(int argc, char* argv[])
 	elapsed_time = (float) (stop_ts - start_ts)/1000000.0;
 	printf("El valor de PI es %1.12f\n",pi);
 	printf("Tiempo = %2.2f segundos\n",elapsed_time);
+	
 	return 0;
 }
