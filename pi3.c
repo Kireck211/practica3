@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <sys/time.h>
+#include <sys/shm.h>
 
 long long num_steps = 1000000000;
 double step;
