@@ -26,6 +26,7 @@ int main(int argc, char * argv[])
 		perror("shmat pi3_child");
 		exit(2);
 	}
+	double_pointer = shm;
 
 	double step = 1./(double)num_steps;
 
