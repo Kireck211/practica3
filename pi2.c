@@ -25,7 +25,7 @@ int *tfunc(void *args)
 	int start = tinfo->i * (num_steps / NTHREADS);
 	int end = (tinfo->i + 1) * (num_steps / NTHREADS);
 
-	printf("Thread i %d\n", tinfo->i );
+	//printf("Thread i %d\n", tinfo->i );
 
 	int i;
 	double x, sum = 0.0;
@@ -35,7 +35,7 @@ int *tfunc(void *args)
 		sum = sum + 4.0/(1.0+ x*x);
 	}
 	tinfo->sum = sum;
-	printf("Thread sum %f\n", tinfo->sum );
+	//printf("Thread sum %f\n", tinfo->sum );
 
 	return 0;
 }
@@ -44,20 +44,25 @@ int main(int argc, char* argv[])
 {
 	long long start_ts;
 	long long stop_ts;
+	int i;
 	float elapsed_time;
 	long lElapsedTime;
 	struct timeval ts;
 
 	//Child stack initialization
-	char *child_stack = (char*)malloc(sizeof(char)*STACK_SIZE);
-	char *top_stack = child_stack + STACK_SIZE;
+	char **array = (char**)malloc(sizeof(char*) * 4);
+	for (i = 0; i < NTHREADS; i++)
+	{
+		array[i] = (char*)malloc(sizeof(char)*STACK_SIZE);
+	}
+	//char *child_stack = (char*)malloc(sizeof(char)*STACK_SIZE);
+	//char *top_stack = child_stack + STACK_SIZE;
 
 	//Thread arrays
 	pid_t tid[NTHREADS];
 	td threads[NTHREADS];
 
 	double x, pi, sum=0.0;
-	int i;
 
 	gettimeofday(&ts, NULL);
 	start_ts = ts.tv_sec * 1000000 + ts.tv_usec; // Tiempo inicial
@@ -68,14 +73,14 @@ int main(int argc, char* argv[])
 	{
 		threads[i].sum = 0.0;
 		threads[i].i = i;
-		tid[i] = clone(tfunc, top_stack, SIGCHLD, (void*)&threads[i]);
+		tid[i] = clone(tfunc, array[i] + STACK_SIZE, SIGCHLD | CLONE_VM, (void*)&threads[i]);
 	}
 
 	
 	for(int i = 0; i < NTHREADS; i++)
 	{
 		waitpid(tid[i], NULL, 0);
-		printf("Salió de %d con suma %f\n", tid[i], threads[i].sum);
+		//printf("Salió de %d con suma %f\n", tid[i], threads[i].sum);
 	}
 
 	pi = (threads[0].sum + threads[1].sum + threads[2].sum + threads[3].sum)*step;
