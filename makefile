@@ -1,4 +1,4 @@
-ll : pi pi1 pi2 pi3
+ll : pi pi1 pi2 pi3 pi3_child
 
 pi : pi.o
 	gcc -o pi pi.o
@@ -24,5 +24,11 @@ pi3 : pi3.o
 pi3.o : pi3.c
 	gcc -c pi3.c
 
+pi3_child : pi3_child.o
+	gcc -o pi3_child pi3_child.o
+
+pi3_child.o : pi3_child.c
+	gcc -c pi3_child.c
+
 clean:
-	rm pi.o pi1.o pi2.o pi3.o pi pi1 pi2 pi3 
+	rm pi.o pi1.o pi2.o pi3.o pi3_child.o pi pi1 pi2 pi3 pi3_child
