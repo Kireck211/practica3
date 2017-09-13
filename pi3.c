@@ -6,7 +6,7 @@
 #include <sys/wait.h>
 
 #define NTHREADS 4
-#define SHMSIZE sizeof(double)*100
+#define SHMSIZE sizeof(double)
 
 long long num_steps = 1000000000;
 double step;
