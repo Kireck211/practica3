@@ -51,19 +51,23 @@ int main(int argc, char* argv[])
 		proc<<=1;
 	}
 
+	//Waiting for all processes to finish
 	for (i = 0; i < NTHREADS; i++)
 	{
 		wait(&status);
 	}
 
+
 	for (i = 0; i < NTHREADS; i++)
 	{
+		//Error, memory not allocated correctly
 		if ((shmid = shmget(key+i, SHMSIZE, 0666)) < 0)
 		{
 			perror("shmget pi3");
 			exit(1);
 		}
 
+		//Error, can't get memory pointer
 		if ((shm = shmat(shmid, NULL, 0)) == (double *) -1)
 		{
 			perror("shmat pi3");

@@ -21,6 +21,7 @@ typedef struct thread
 
 int *tfunc(void *args)
 {
+	//Getting thread info
 	td *tinfo = (td *) args;
 	int start = tinfo->i * (num_steps / NTHREADS);
 	int end = (tinfo->i + 1) * (num_steps / NTHREADS);
@@ -50,7 +51,7 @@ int main(int argc, char* argv[])
 	struct timeval ts;
 
 	//Child stack initialization
-	char **array = (char**)malloc(sizeof(char*) * 4);
+	char **array = (char**)malloc(sizeof(char*) * NTHREADS);
 	for (i = 0; i < NTHREADS; i++)
 	{
 		array[i] = (char*)malloc(sizeof(char)*STACK_SIZE);
@@ -77,6 +78,7 @@ int main(int argc, char* argv[])
 	}
 
 	
+	//Waiting for all threads to finish
 	for(int i = 0; i < NTHREADS; i++)
 	{
 		waitpid(tid[i], NULL, 0);

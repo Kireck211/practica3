@@ -13,8 +13,10 @@ typedef struct thread
 	int i;
 } td;
 
+//thread function
 void *tfunc(void * args)
 {
+	//Getting thread info
 	td *tinfo = (td *) args;
 	int start = tinfo->i * (num_steps / NTHREADS);
 	int end = (tinfo->i + 1) * (num_steps / NTHREADS);
@@ -40,6 +42,8 @@ int main(int argc, char* argv[])
 
 	double x, pi, sum=0.0;
 	int i;
+
+	//Thread arrays
 	pthread_t idhilos[NTHREADS];
 	td threads[NTHREADS];
 
@@ -55,6 +59,7 @@ int main(int argc, char* argv[])
 		pthread_create(&idhilos[i], NULL, tfunc, (void *) &threads[i]);
 	}
 
+	//Waiting for all threads to finish
 	for(i = 0; i < NTHREADS; i++)
 	{
 		pthread_join(idhilos[i], NULL);
@@ -65,6 +70,7 @@ int main(int argc, char* argv[])
 		printf("thread %d sum %lf\n", threads[i].i, threads[i].sum);
 	}*/
 
+	//Sum of all threads result
 	pi = (threads[0].sum + threads[1].sum + threads[2].sum + threads[3].sum)*step;
 
 	gettimeofday(&ts, NULL);

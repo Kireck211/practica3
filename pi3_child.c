@@ -12,15 +12,19 @@ int main(int argc, char * argv[])
 {
 	int index, shmid, key, i, start, end;
 	double x, sum = 0.0, *shm, *double_pointer;
+
+	//Casts args
 	sscanf(argv[1], "%d", &key);
 	sscanf(argv[2], "%d", &index);
 
+	//Error, memory not allocated correctly
 	if((shmid = shmget(key, SHMSIZE, IPC_CREAT | 0666)) < 0)
 	{
 		perror("shmget pi3_child");
 		exit(1);
 	}
 
+	//Error, can't get memory pointer
 	if((shm = (double *)shmat(shmid, NULL, 0)) == (double *) -1)
 	{
 		perror("shmat pi3_child");
